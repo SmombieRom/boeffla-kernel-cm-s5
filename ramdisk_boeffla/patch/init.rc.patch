@@ -11,7 +11,18 @@ diff --git a/init.rc b/init.rc
 index 4b644bc..9a8ab4e 100755
 --- a/init.rc
 +++ b/init.rc
-@@ -765,3 +765,10 @@ service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D
+@@ -20,6 +20,10 @@ on early-init
+
+     # Set the security context of /adb_keys if present.
+     restorecon /adb_keys
++
++    # Boeffla kernel: set the security contexts of /sbin and /res/bc
++    restorecon_recursive /sbin
++    restorecon_recursive /res/bc
+
+     start ueventd
+
+@@ -769,3 +769,10 @@ service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D
      user logd
      group log
      writepid /dev/cpuset/system-background/tasks
