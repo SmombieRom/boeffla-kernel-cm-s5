@@ -26,6 +26,7 @@
 	BUSYBOX_ENABLER="/data/.boeffla/enable-busybox"
 	FRANDOM_ENABLER="/data/.boeffla/enable-frandom"
 	PERMISSIVE_ENABLER="/data/.boeffla/enable-permissive"
+	DISABLE_DEFAULT_ZRAM="/data/.boeffla/disable-default-zram"
 
 # If not yet existing, create a boeffla-kernel-data folder on sdcard 
 # which is used for many purposes,
@@ -54,6 +55,13 @@
 	/sbin/busybox grep ro.build.version /system/build.prop >> $BOEFFLA_LOGFILE
 	echo "=========================" >> $BOEFFLA_LOGFILE
 
+# disable default zRam if configured
+	if [ -f $DISABLE_DEFAULT_ZRAM ]; then
+		busybox swapoff /dev/block/zram0
+		echo "1" > /sys/block/zram0/reset
+		busybox sync
+	fi
+
 # remove any obsolete Boeffla-Config V2 startconfig done file
 	/sbin/busybox rm -f $BOEFFLA_STARTCONFIG_DONE
 
@@ -69,9 +77,6 @@
 	/sbin/busybox sync
 	/sbin/busybox mount -o remount,commit=20,noatime $DATA_DEVICE /data
 	/sbin/busybox sync
-
-	# Initialize swappiness to 130 for vnswap
-	echo "130" > /proc/sys/vm/swappiness
 
 	echo $(date) Boeffla-Kernel default settings 1 applied >> $BOEFFLA_LOGFILE
 
@@ -130,7 +135,7 @@
 	cat /sys/class/kgsl/kgsl-3d0/devfreq/governor > /dev/bk_orig_gpu_governor
 	cat /sys/class/kgsl/kgsl-3d0/min_pwrlevel > /dev/bk_orig_min_pwrlevel
 	cat /sys/class/kgsl/kgsl-3d0/max_pwrlevel > /dev/bk_orig_max_pwrlevel
- 	cat /proc/sys/vm/swappiness > /dev/bk_orig_swappiness
+	cat /proc/sys/vm/swappiness > /dev/bk_orig_swappiness
 	cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/bk_orig_scaling_governor
 	cat /sys/block/mmcblk0/queue/scheduler > /dev/bk_orig_mmcblk0_scheduler
 	cat /sys/block/mmcblk1/queue/scheduler > /dev/bk_orig_mmcblk1_scheduler
@@ -149,7 +154,7 @@
 
 		echo $(date) "No startup configuration found, enable all default settings"  >> $BOEFFLA_LOGFILE
 	fi
-	
+
 # Turn off debugging for certain modules
 	echo 0 > /sys/module/kernel/parameters/initcall_debug
 	echo 0 > /sys/module/lowmemorykiller/parameters/debug_level

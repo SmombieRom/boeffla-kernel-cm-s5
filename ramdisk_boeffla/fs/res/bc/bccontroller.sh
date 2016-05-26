@@ -18,7 +18,7 @@ KERNEL_SPECS="g900f;cm;cm13.0;http://boeffla.df-kunde.de/sgs5/boeffla-kernel-cm/
 # kernel features 
 # (1=enable-busybox,2=enable-frandom,3=wipe-cache,4=disable-zram-control)
 # (5=enable-default-zram-control,6=enable-selinux-switch, 7=enable-selinux-control)
-KERNEL_FEATURES="-3-6-7-"
+KERNEL_FEATURES="-3-4-5-6-7-"
 
 # path to kernel libraries
 LIBPATH="/system/lib/modules"
@@ -365,8 +365,6 @@ fi
 if [ "param_zram" == "$1" ]; then
 	# zRam size min/max/steps
 	echo "104857600;1572864000;20971520;"
-	# swappiness max value
-	echo "200"
 	exit 0
 fi
 
@@ -1213,25 +1211,25 @@ if [ "apply_survival_script" == "$1" ]; then
 	exit 0
 fi
 
-if [ "apply_zram" == "$1" ]; then
-
-	busybox swapoff /dev/block/vnswap0
-	busybox sync
-	busybox sleep 0.2s
-	
-	if [ "1" == "$2" ]; then
-		echo "$4" > /sys/block/vnswap0/disksize
-		busybox mkswap /dev/block/vnswap0
-		busybox sleep 0.2s
-		busybox sync
-		busybox swapon -p 2 /dev/block/vnswap0
-		busybox sleep 0.1s
-		busybox sync
-		echo "130" > /proc/sys/vm/swappiness
-	fi
-
-	exit 0
-fi
+#if [ "apply_zram" == "$1" ]; then
+#
+#	busybox swapoff /dev/block/vnswap0
+#	busybox sync
+#	busybox sleep 0.2s
+#
+#	if [ "1" == "$2" ]; then
+#		echo "$4" > /sys/block/vnswap0/disksize
+#		busybox mkswap /dev/block/vnswap0
+#		busybox sleep 0.2s
+#		busybox sync
+#		busybox swapon -p 2 /dev/block/vnswap0
+#		busybox sleep 0.1s
+#		busybox sync
+#		echo "130" > /proc/sys/vm/swappiness
+#	fi
+#
+#	exit 0
+#fi
 
 if [ "apply_cifs" == "$1" ]; then
 	if [ "1" == "$2" ]; then
