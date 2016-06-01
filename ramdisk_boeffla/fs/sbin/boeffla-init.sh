@@ -55,6 +55,13 @@
 	/sbin/busybox grep ro.build.version /system/build.prop >> $BOEFFLA_LOGFILE
 	echo "=========================" >> $BOEFFLA_LOGFILE
 
+# remove any obsolete Boeffla-Config V2 startconfig done file
+	/sbin/busybox rm -f $BOEFFLA_STARTCONFIG_DONE
+
+# remove not used configuration files for frandom and busybox
+	/sbin/busybox rm -f $BUSYBOX_ENABLER
+	/sbin/busybox rm -f $FRANDOM_ENABLER
+
 # disable default zRam if configured
 	if [ -f $DISABLE_DEFAULT_ZRAM ]; then
 		busybox swapoff /dev/block/zram0
@@ -62,13 +69,6 @@
 		busybox sync
 	fi
 
-# remove any obsolete Boeffla-Config V2 startconfig done file
-	/sbin/busybox rm -f $BOEFFLA_STARTCONFIG_DONE
-
-# remove not used configuration files for frandom and busybox
-	/sbin/busybox rm -f $BUSYBOX_ENABLER
-	/sbin/busybox rm -f $FRANDOM_ENABLER
-	
 # Apply Boeffla-Kernel default settings 1
 
 	# Ext4 tweaks default to on
