@@ -71,7 +71,6 @@
 #ifdef CONFIG_TIMA_RKP_COHERENT_TT
 #include <linux/memblock.h>
 #endif
-#include <linux/sched_clock.h>
 #include <asm/io.h>
 #include <asm/bugs.h>
 #include <asm/setup.h>
@@ -707,7 +706,6 @@ asmlinkage void __init start_kernel(void)
 	softirq_init();
 	timekeeping_init();
 	time_init();
-	sched_clock_postinit();
 	profile_init();
 	call_function_init();
 	if (!irqs_disabled())
