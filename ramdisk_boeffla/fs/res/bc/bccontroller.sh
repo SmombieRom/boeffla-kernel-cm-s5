@@ -365,7 +365,7 @@ fi
 
 if [ "param_zram" == "$1" ]; then
 	# zRam size min/max/steps
-	echo "104857600;1572864000;20971520;"
+	echo "104857600;1572864000;20971520"
 	exit 0
 fi
 
