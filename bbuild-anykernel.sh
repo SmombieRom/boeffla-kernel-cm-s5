@@ -12,10 +12,10 @@
 
 BOEFFLA_VERSION="1.0-test-CM13.0-g900f"
 
-TOOLCHAIN="/opt/toolchains/arm-eabi-4.8/bin/arm-eabi-"
+TOOLCHAIN="/opt/toolchains/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
 ARCHITECTURE=arm
-COMPILER_FLAGS_KERNEL="-fno-diagnostics-show-caret"
-COMPILER_FLAGS_MODULE="-fno-diagnostics-show-caret"
+COMPILER_FLAGS_KERNEL="-Wno-array-bounds"
+COMPILER_FLAGS_MODULE=""
 
 KERNEL_IMAGE="zImage"
 COMPILE_DTB="y"
